@@ -81,6 +81,7 @@ generate_button = tk.Button(root, text="Generate Map", command=generate_map, sta
 generate_button.pack(pady=10)
 
 tk.Button(root, text="Show Analytics", command=lambda: show_analytics(geo_results), width=25, height=2, bg="#9C27B0", fg="white").pack(pady=5)
+tk.Button(root, text="Protocol Traffic Pie Chart", command=lambda: plot_protocol_distribution(file_path), width=30, height=2, bg="#607D8B", fg="white").pack(pady=5)
 
 tk.Label(root, text="CSV must have 'Source' and 'Destination' columns.", font=("Arial", 9)).pack(pady=5)
 
