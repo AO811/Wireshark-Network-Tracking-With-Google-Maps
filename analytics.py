@@ -60,26 +60,6 @@ def show_analytics(data):
         plt.ylabel("Number of IPs")
         plt.show()
 
-    # Filter Traffic by Protocol
-    def plot_protocol_distribution(file_path):
-     try:
-        import pandas as pd
-        df = pd.read_csv(file_path, encoding='latin1', on_bad_lines='skip')
-        protocols = df['Protocol'].dropna().tolist()
-        counts = Counter(protocols)
-
-        labels = list(counts.keys())
-        sizes = list(counts.values())
-
-        plt.figure(figsize=(6, 6))
-        plt.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=140)
-        plt.title('Protocol Distribution')
-        plt.axis('equal')
-        plt.tight_layout()
-        plt.show()
-     except Exception as e:
-        print(f"Error in protocol analysis: {e}")    
-
     # Export Button
     def save_report():
         df = pd.DataFrame(data)
