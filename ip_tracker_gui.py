@@ -45,19 +45,15 @@ def generate_map():
 
     for ip_data in filtered:
         popup = (
-                f"<b>IP:</b> {ip_data['IP']}<br>"
-                f"<b>City:</b> {ip_data['City']}<br>"
-                f"<b>Region:</b> {ip_data['Region']}<br>"
-                f"<b>Country:</b> {ip_data['Country']}<br>"
-                f"<b>ISP:</b> {ip_data['ISP']}<br>"
-                f"<b>Timezone:</b> {ip_data['Timezone']}<br>"
-                f"<b>Threat:</b> {ip_data['Threat Status']}<br>"
-                f"<b>Abuse Score:</b> {ip_data['Abuse Score']}<br>"
-                f"<b>Total Reports:</b> {ip_data.get('Total Reports', 0)}<br>"
-                f"<b>Domain:</b> {ip_data.get('Domain', 'N/A')}<br>"
-                f"<b>Whitelisted:</b> {ip_data.get('Whitelisted', False)}"
-                )
-
+            f"<b>IP:</b> {ip_data['IP']}<br>"
+            f"<b>City:</b> {ip_data['City']}<br>"
+            f"<b>Region:</b> {ip_data['Region']}<br>"
+            f"<b>Country:</b> {ip_data['Country']}<br>"
+            f"<b>ISP:</b> {ip_data['ISP']}<br>"
+            f"<b>Timezone:</b> {ip_data['Timezone']}<br>"
+            f"<b>Threat:</b> {ip_data['Threat Status']}<br>"
+            f"<b>Abuse Score:</b> {ip_data['Abuse Score']}"
+        )
         folium.Marker(
             location=[ip_data['Latitude'], ip_data['Longitude']],
             popup=folium.Popup(popup, max_width=300),
