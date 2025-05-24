@@ -10,6 +10,7 @@ from tracker import fetch_ip_data
 from analytics import show_analytics
 
 geo_results = []
+file_path = None 
 
 def get_marker_color(threat_status):
     return {
@@ -19,6 +20,7 @@ def get_marker_color(threat_status):
     }.get(threat_status, "blue")
 
 def open_file():
+    global geo_results, file_path
     file_path = filedialog.askopenfilename(filetypes=[("CSV Files", "*.csv")])
     if file_path:
         global geo_results
@@ -43,15 +45,19 @@ def generate_map():
 
     for ip_data in filtered:
         popup = (
-            f"<b>IP:</b> {ip_data['IP']}<br>"
-            f"<b>City:</b> {ip_data['City']}<br>"
-            f"<b>Region:</b> {ip_data['Region']}<br>"
-            f"<b>Country:</b> {ip_data['Country']}<br>"
-            f"<b>ISP:</b> {ip_data['ISP']}<br>"
-            f"<b>Timezone:</b> {ip_data['Timezone']}<br>"
-            f"<b>Threat:</b> {ip_data['Threat Status']}<br>"
-            f"<b>Abuse Score:</b> {ip_data['Abuse Score']}"
-        )
+                f"<b>IP:</b> {ip_data['IP']}<br>"
+                f"<b>City:</b> {ip_data['City']}<br>"
+                f"<b>Region:</b> {ip_data['Region']}<br>"
+                f"<b>Country:</b> {ip_data['Country']}<br>"
+                f"<b>ISP:</b> {ip_data['ISP']}<br>"
+                f"<b>Timezone:</b> {ip_data['Timezone']}<br>"
+                f"<b>Threat:</b> {ip_data['Threat Status']}<br>"
+                f"<b>Abuse Score:</b> {ip_data['Abuse Score']}<br>"
+                f"<b>Total Reports:</b> {ip_data.get('Total Reports', 0)}<br>"
+                f"<b>Domain:</b> {ip_data.get('Domain', 'N/A')}<br>"
+                f"<b>Whitelisted:</b> {ip_data.get('Whitelisted', False)}"
+                )
+
         folium.Marker(
             location=[ip_data['Latitude'], ip_data['Longitude']],
             popup=folium.Popup(popup, max_width=300),
@@ -80,7 +86,7 @@ country_menu.pack()
 generate_button = tk.Button(root, text="Generate Map", command=generate_map, state="disabled", width=25, height=2, bg="#2196F3", fg="white")
 generate_button.pack(pady=10)
 
-tk.Button(root, text="Show Analytics", command=lambda: show_analytics(geo_results), width=25, height=2, bg="#9C27B0", fg="white").pack(pady=5)
+tk.Button(root, text="Show Analytics", command=lambda: show_analytics(geo_results, file_path), width=25, height=2, bg="#9C27B0", fg="white").pack(pady=5)
 
 tk.Label(root, text="CSV must have 'Source' and 'Destination' columns.", font=("Arial", 9)).pack(pady=5)
 

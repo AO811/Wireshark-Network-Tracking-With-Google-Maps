@@ -22,13 +22,20 @@ def check_ip_threat_abuseipdb(ip, api_key=API_KEY):
         response = requests.get(url, headers=headers, params=querystring)
         data = response.json().get('data', {})
         abuse_score = data.get('abuseConfidenceScore', 0)
+        total_reports = data.get('totalReports', 0)
+        domain = data.get('domain', 'N/A')
+        is_whitelisted = data.get('isWhitelisted', False)
+
         if abuse_score > 50:
-            return 'Malicious', abuse_score
+            threat = 'Malicious'
         elif abuse_score > 10:
-            return 'Suspicious', abuse_score
-        return 'Clean', abuse_score
+            threat = 'Suspicious'
+        else:
+            threat = 'Clean'
+
+        return threat, abuse_score, total_reports, domain, is_whitelisted
     except:
-        return 'Unknown', 0
+        return 'Unknown', 0, 0, 'N/A', False
 
 def fetch_ip_data(file_path):
     geo_results = []
@@ -39,20 +46,22 @@ def fetch_ip_data(file_path):
     for ip in ip_list:
         try:
             response = requests.get(f"http://ip-api.com/json/{ip}").json()
-            if response['status'] == 'success':
-                threat_status, abuse_score = check_ip_threat_abuseipdb(ip)
-                geo_results.append({
-                    'IP': ip,
-                    'City': response.get('city', 'Unknown'),
-                    'Region': response.get('regionName', 'Unknown'),
-                    'Country': response.get('country', 'Unknown'),
-                    'ISP': response.get('isp', 'Unknown'),
-                    'Timezone': response.get('timezone', 'Unknown'),
-                    'Latitude': response['lat'],
-                    'Longitude': response['lon'],
-                    'Threat Status': threat_status,
-                    'Abuse Score': abuse_score
-                })
+            if response['status'] == 'success':threat_status, abuse_score, total_reports, domain, is_whitelisted = check_ip_threat_abuseipdb(ip)
+            geo_results.append({
+            'IP': ip,
+            'City': response.get('city', 'Unknown'),
+            'Region': response.get('regionName', 'Unknown'),
+            'Country': response.get('country', 'Unknown'),
+            'ISP': response.get('isp', 'Unknown'),
+            'Timezone': response.get('timezone', 'Unknown'),
+            'Latitude': response['lat'],
+            'Longitude': response['lon'],
+            'Threat Status': threat_status,
+            'Abuse Score': abuse_score,
+            'Total Reports': total_reports,
+            'Domain': domain,
+            'Whitelisted': is_whitelisted 
+      })
             time.sleep(1)
         except Exception as e:
             print(f"IP {ip} error: {e}")

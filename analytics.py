@@ -4,14 +4,14 @@ import matplotlib.pyplot as plt
 from collections import Counter
 import pandas as pd
 
-def show_analytics(data):
+def show_analytics(data, file_path=None):
     if not data:
         messagebox.showinfo("No Data", "No geolocation data available.")
         return
 
     window = tk.Toplevel()
     window.title("Analytics Dashboard")
-    window.geometry("700x500")
+    window.geometry("700x520")
 
     # Threat Status Summary
     threat_counts = Counter(item["Threat Status"] for item in data)
@@ -40,7 +40,7 @@ def show_analytics(data):
         tree.insert("", "end", values=(row["IP"], row["Country"], row["Abuse Score"]))
     tree.pack(fill="both", expand=True)
 
-    # Plot Pie Chart
+    # Threat Pie Chart
     def show_pie():
         labels = list(threat_counts.keys())
         sizes = list(threat_counts.values())
@@ -49,7 +49,7 @@ def show_analytics(data):
         plt.title("Threat Distribution")
         plt.show()
 
-    # Plot Bar Chart
+    # Threat Bar Chart
     def show_bar():
         labels = list(threat_counts.keys())
         sizes = list(threat_counts.values())
@@ -60,6 +60,28 @@ def show_analytics(data):
         plt.ylabel("Number of IPs")
         plt.show()
 
+    # Protocol Pie Chart
+    def plot_protocol_distribution():
+        if not file_path:
+            messagebox.showwarning("File Missing", "No CSV file path provided for protocol analysis.")
+            return
+        try:
+            df = pd.read_csv(file_path)
+            if 'Protocol' not in df.columns:
+                messagebox.showerror("Error", "'Protocol' column not found in the CSV.")
+                return
+            protocol_counts = df['Protocol'].value_counts()
+            plt.figure(figsize=(7, 7))
+            plt.bar(protocol_counts.index, protocol_counts.values, color='skyblue')
+            plt.title("Protocol Traffic Distribution")
+            plt.xlabel("Protocol")
+            plt.ylabel("Number of IPs")
+            plt.xticks(rotation=45)
+            plt.tight_layout()
+            plt.show()
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to plot protocol distribution.\n{e}")
+
     # Export Button
     def save_report():
         df = pd.DataFrame(data)
@@ -68,9 +90,11 @@ def show_analytics(data):
             df.to_csv(path, index=False)
             messagebox.showinfo("Saved", f"Report saved to {path}")
 
+    # Buttons
     button_frame = tk.Frame(window)
     button_frame.pack(pady=10)
 
-    tk.Button(button_frame, text="Show Pie Chart", command=show_pie, width=15, bg="#03A9F4", fg="white").pack(side="left", padx=5)
-    tk.Button(button_frame, text="Show Bar Chart", command=show_bar, width=15, bg="#FF9800", fg="white").pack(side="left", padx=5)
+    tk.Button(button_frame, text="Show Pie Chart", command=show_pie, width=16, bg="#03A9F4", fg="white").pack(side="left", padx=5)
+    tk.Button(button_frame, text="Show Bar Chart", command=show_bar, width=16, bg="#FF9800", fg="white").pack(side="left", padx=5)
+    tk.Button(button_frame, text="Protocol Pie Chart", command=plot_protocol_distribution, width=18, bg="#607D8B", fg="white").pack(side="left", padx=5)
     tk.Button(button_frame, text="Save CSV Report", command=save_report, width=18, bg="#4CAF50", fg="white").pack(side="left", padx=5)
