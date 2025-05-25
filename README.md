@@ -99,8 +99,15 @@ python ip_tracker_gui.py
 ### 📸 Screenshots 
 
 - The GUI interface
+  ![image](https://github.com/user-attachments/assets/f46a2a6a-98f8-402a-8b0e-c97e53dd17b6)
+
 
 - Generated map with colored markers
+ ![image](https://github.com/user-attachments/assets/f45a1766-f66c-4f25-8d4e-f7c809ac16c0)
+
+ ![image](https://github.com/user-attachments/assets/4e3ea78b-c31a-4712-a2a9-218e4a2c113b)
+
+
 
 - Analytics dashboard (charts & tables)
 
