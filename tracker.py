@@ -1,4 +1,3 @@
-# tracker.py
 import pandas as pd
 import time
 import requests
