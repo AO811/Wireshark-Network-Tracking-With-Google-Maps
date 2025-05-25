@@ -1,0 +1,6 @@
+pandas
+folium
+requests
+pyshark
+python-dotenv
+tkinter   # (often included with Python)

@@ -11,45 +11,68 @@ def show_analytics(data, file_path=None):
 
     window = tk.Toplevel()
     window.title("Analytics Dashboard")
-    window.geometry("700x520")
+    window.geometry("720x550")
+    window.configure(bg="#1e1e2f")
+
+    # Title Label
+    tk.Label(window, text="🔍 Threat Analytics Dashboard", font=("Segoe UI", 16, "bold"), bg="#1e1e2f", fg="#00FFD1").pack(pady=10)
 
     # Threat Status Summary
     threat_counts = Counter(item["Threat Status"] for item in data)
-    summary_frame = ttk.LabelFrame(window, text="Threat Summary", padding=10)
-    summary_frame.pack(fill="x", padx=10, pady=10)
+    summary_frame = ttk.LabelFrame(window, text="Threat Summary")
+    summary_frame.configure(style="Dark.TLabelframe")
+    summary_frame.pack(fill="x", padx=15, pady=10)
 
     for status in ["Clean", "Suspicious", "Malicious", "Unknown"]:
         count = threat_counts.get(status, 0)
-        ttk.Label(summary_frame, text=f"{status}: {count}", font=("Arial", 10)).pack(anchor="w")
+        ttk.Label(summary_frame, text=f"{status}: {count}", style="Dark.TLabel").pack(anchor="w", pady=2)
 
-    # Top Malicious IPs
+    # Top Malicious IPs Table
     top_malicious = sorted(
         [item for item in data if item["Threat Status"] in ('Malicious', 'Suspicious')],
         key=lambda x: x["Abuse Score"],
         reverse=True
     )[:10]
 
-    table_frame = ttk.LabelFrame(window, text="Top Malicious and Suspicious IPs", padding=10)
-    table_frame.pack(fill="both", expand=True, padx=10, pady=5)
+    table_frame = ttk.LabelFrame(window, text="Top Malicious and Suspicious IPs")
+    table_frame.configure(style="Dark.TLabelframe")
+    table_frame.pack(fill="both", expand=True, padx=15, pady=5)
 
-    tree = ttk.Treeview(table_frame, columns=("IP", "Country", "Abuse Score"), show="headings")
+    style = ttk.Style()
+    style.theme_use("clam")
+
+    style.configure("Treeview",
+                    background="#2a2a40",
+                    foreground="white",
+                    fieldbackground="#2a2a40",
+                    rowheight=25,
+                    font=("Segoe UI", 10))
+    style.configure("Treeview.Heading", background="#3e3e5e", foreground="#00FFD1", font=("Segoe UI", 10, "bold"))
+    style.configure("Dark.TLabelframe", background="#1e1e2f", foreground="#00FFD1", font=("Segoe UI", 10, "bold"))
+    style.configure("Dark.TLabel", background="#1e1e2f", foreground="white", font=("Segoe UI", 10))
+
+    tree = ttk.Treeview(table_frame, columns=("IP", "Country", "Abuse Score"), show="headings", height=7)
     tree.heading("IP", text="IP")
     tree.heading("Country", text="Country")
     tree.heading("Abuse Score", text="Abuse Score")
+
+    for col in ("IP", "Country", "Abuse Score"):
+        tree.column(col, anchor="center", width=150)
+
     for row in top_malicious:
         tree.insert("", "end", values=(row["IP"], row["Country"], row["Abuse Score"]))
     tree.pack(fill="both", expand=True)
 
-    # Threat Pie Chart
+    # Chart Functions
     def show_pie():
         labels = list(threat_counts.keys())
         sizes = list(threat_counts.values())
         plt.figure(figsize=(6, 6))
         plt.pie(sizes, labels=labels, autopct="%1.1f%%", startangle=140)
         plt.title("Threat Distribution")
+        plt.tight_layout()
         plt.show()
 
-    # Threat Bar Chart
     def show_bar():
         labels = list(threat_counts.keys())
         sizes = list(threat_counts.values())
@@ -58,9 +81,9 @@ def show_analytics(data, file_path=None):
         plt.title("Threat Category Count")
         plt.xlabel("Threat Status")
         plt.ylabel("Number of IPs")
+        plt.tight_layout()
         plt.show()
 
-    # Protocol Pie Chart
     def plot_protocol_distribution():
         if not file_path:
             messagebox.showwarning("File Missing", "No CSV file path provided for protocol analysis.")
@@ -71,18 +94,17 @@ def show_analytics(data, file_path=None):
                 messagebox.showerror("Error", "'Protocol' column not found in the CSV.")
                 return
             protocol_counts = df['Protocol'].value_counts()
-            plt.figure(figsize=(7, 7))
-            plt.bar(protocol_counts.index, protocol_counts.values, color='skyblue')
+            plt.figure(figsize=(7, 5))
+            plt.bar(protocol_counts.index, protocol_counts.values, color='#03A9F4')
             plt.title("Protocol Traffic Distribution")
             plt.xlabel("Protocol")
-            plt.ylabel("Number of IPs")
+            plt.ylabel("Count")
             plt.xticks(rotation=45)
             plt.tight_layout()
             plt.show()
         except Exception as e:
             messagebox.showerror("Error", f"Failed to plot protocol distribution.\n{e}")
 
-    # Export Button
     def save_report():
         df = pd.DataFrame(data)
         path = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=[("CSV Files", "*.csv")])
@@ -90,11 +112,11 @@ def show_analytics(data, file_path=None):
             df.to_csv(path, index=False)
             messagebox.showinfo("Saved", f"Report saved to {path}")
 
-    # Buttons
-    button_frame = tk.Frame(window)
-    button_frame.pack(pady=10)
+    # Button Group
+    button_frame = tk.Frame(window, bg="#1e1e2f")
+    button_frame.pack(pady=15)
 
-    tk.Button(button_frame, text="Show Pie Chart", command=show_pie, width=16, bg="#03A9F4", fg="white").pack(side="left", padx=5)
-    tk.Button(button_frame, text="Show Bar Chart", command=show_bar, width=16, bg="#FF9800", fg="white").pack(side="left", padx=5)
-    tk.Button(button_frame, text="Protocol Pie Chart", command=plot_protocol_distribution, width=18, bg="#607D8B", fg="white").pack(side="left", padx=5)
-    tk.Button(button_frame, text="Save CSV Report", command=save_report, width=18, bg="#4CAF50", fg="white").pack(side="left", padx=5)
+    tk.Button(button_frame, text="🧁 Threat Pie Chart", command=show_pie, width=18, height=2, bg="#00b894", fg="black").pack(side="left", padx=8)
+    tk.Button(button_frame, text="📊 Threat Bar Chart", command=show_bar, width=18, height=2, bg="#e17055", fg="white").pack(side="left", padx=8)
+    tk.Button(button_frame, text="📡 Protocol Chart", command=plot_protocol_distribution, width=18, height=2, bg="#0984e3", fg="white").pack(side="left", padx=8)
+    tk.Button(button_frame, text="💾 Save CSV Report", command=save_report, width=18, height=2, bg="#6c5ce7", fg="white").pack(side="left", padx=8)
