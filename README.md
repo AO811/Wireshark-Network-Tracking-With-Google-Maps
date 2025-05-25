@@ -50,9 +50,9 @@ To use this tool effectively, you need to capture IP traffic using Wireshark and
   - Once sufficient packets are captured, stop the capture.
   - Go to File → Export Packet Dissections → As CSV.
 Ensure that the exported file includes at least the following columns:
-  - `Source`
-  - `Destination`
-  - `Protocol` (for analytics features)
+    - `Source`
+    - `Destination`
+    - `Protocol` (for analytics features)
 Save the file and use it in the application.
 
 ---
