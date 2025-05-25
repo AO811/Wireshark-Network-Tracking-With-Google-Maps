@@ -123,6 +123,20 @@ def generate_map():
             icon=folium.Icon(color=get_marker_color(ip_data['Threat Status']), icon='globe')
         ).add_to(marker_cluster)
 
+    # Add custom legend
+    legend_html = """
+     <div style="position: fixed; 
+                 bottom: 50px; left: 50px; width: 180px; height: 110px; 
+                 border:2px solid grey; z-index:9999; font-size:14px;
+                 background-color:white; padding:10px;">
+     <b>Threat Legend</b><br>
+     <i style="color:green;">●</i> Clean<br>
+     <i style="color:orange;">●</i> Suspicious<br>
+     <i style="color:red;">●</i> Malicious
+     </div>
+     """
+    world_map.get_root().html.add_child(folium.Element(legend_html))
+
     # Save filtered CSV and HTML map
     pd.DataFrame(filtered).to_csv("geolocated_ips_gui_filtered.csv", index=False)
     filename = "ip_map_gui_filtered.html"
