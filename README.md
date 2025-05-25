@@ -29,6 +29,34 @@ This project is a real-time cybersecurity tool that tracks IP addresses extracte
 
 ---
 
+### 📦 Requirements
+#### 1. 🧰 Software & Tools
+ - `Python 3.7+`
+ - `Wireshark` – to capture network packets and export them as CSV
+
+#### 2. 📥 Python Libraries
+Install the required Python packages using pip:
+```yaml
+pip install pandas folium matplotlib requests
+```
+
+#### 3. 🌐 Internet Connectivity
+Ensure there is an Internet connection for capturing IP traffic and for geolocation/threat API queries
+
+---
+### 🧪 Packet Capture Instructions
+To use this tool effectively, you need to capture IP traffic using Wireshark and export the data:
+  - Open Wireshark and start capturing on the desired network interface.
+  - Once sufficient packets are captured, stop the capture.
+  - Go to File → Export Packet Dissections → As CSV.
+Ensure that the exported file includes at least the following columns:
+    - `Source`
+    - `Destination`
+    - `Protocol` (for analytics features)
+Save the file and use it in the application.
+
+---
+
 ### ⚙️ How It Works
 
 - `ip_tracker_gui.py`
@@ -112,17 +140,6 @@ This project uses external APIs to fetch geolocation and threat intelligence dat
 - Clean	🟢 Green
 - Suspicious	🟠 Orange
 - Malicious	🔴 Red
-
----
-
-### 📌 Requirements
-Install required Python packages via pip:
-```yaml
-pip install pandas folium matplotlib
-```
-Also, ensure you have:
-Wireshark (to generate .csv packet captures)
-Internet connection (for geolocation/threat API queries)
 
 ---
 
