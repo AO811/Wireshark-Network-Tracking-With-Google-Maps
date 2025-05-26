@@ -65,11 +65,6 @@ def show_analytics(data, file_path=None):
 
     # Chart Functions
     def show_pie():
-        
-        window = tk.Toplevel()
-        window.title("Threat Distribution Pie Chart")
-        window.geometry("720x550")
-        window.configure(bg="#1e1e2f")
     
         labels = list(threat_counts.keys())
         sizes = list(threat_counts.values())
@@ -80,11 +75,6 @@ def show_analytics(data, file_path=None):
         plt.show()
 
     def show_bar():
-        
-        window = tk.Toplevel()
-        window.title("Threat Distribution Bar Chart")
-        window.geometry("720x550")
-        window.configure(bg="#1e1e2f")
         
         labels = list(threat_counts.keys())
         sizes = list(threat_counts.values())
@@ -97,12 +87,7 @@ def show_analytics(data, file_path=None):
         plt.show()
 
     def plot_protocol_distribution():
-        
-        window = tk.Toplevel()
-        window.title("Protocol Traffic Distribution")
-        window.geometry("720x550")
-        window.configure(bg="#1e1e2f")
-        
+    
         if not file_path:
             messagebox.showwarning("File Missing", "No CSV file path provided for protocol analysis.")
             return
