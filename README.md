@@ -183,7 +183,7 @@ python ip_tracker_gui.py
 ### 🧪 Sample CSV File
 A Wireshark-exported CSV file (sample_network_traffic.csv) has been uploaded to this repository for demonstration and testing purposes.
 
-#### 1. ✅ Location: `sample_network_traffic.csv`
+#### 1. ✅ Location: `network_traffic.csv`
 #### 2. 🧾 Includes Columns: No., Time, Source, Destination, Protocol, Length, Info
 #### 3. 🔍 You can use this file to:
   - Test the application flow
