@@ -161,18 +161,18 @@ python ip_tracker_gui.py
 
 ### 📸 Screenshots
 
-- #### GUI Interface
+- GUI Interface
 <img src="https://github.com/user-attachments/assets/f46a2a6a-98f8-402a-8b0e-c97e53dd17b6" width="600"/>
 
 ---
 
-- #### Generated Map with Colored Markers
+- Generated Map with Colored Markers
 <img src="https://github.com/user-attachments/assets/f45a1766-f66c-4f25-8d4e-f7c809ac16c0" width="400"/>  
 <img src="https://github.com/user-attachments/assets/88397812-b6c1-40c4-b28b-6dce96c65a35" width="400"/>
 
 ---
 
-- #### Analytics Dashboard (Charts & Tables)
+- Analytics Dashboard (Charts & Tables)
 <img src="https://github.com/user-attachments/assets/0128efda-57bf-46a2-891a-9b241e7b54b6" width="400"/>
 <img src="https://github.com/user-attachments/assets/9c67c7a0-03d6-4848-bd12-7992c5d9b7c9" width="400"/>
 <img src="https://github.com/user-attachments/assets/8e4724b1-385d-4611-a9cb-1a7e1e9759c8" width="400"/>
