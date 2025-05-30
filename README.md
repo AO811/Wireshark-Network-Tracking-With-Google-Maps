@@ -105,7 +105,8 @@ This project uses external APIs to fetch geolocation and threat intelligence dat
   - IP address
   - Country
   - Latitude & Longitude
-  - Region or City (optional)
+  - Region
+  - City
 
 #### 2. 🚨 Threat Intelligence API
 
